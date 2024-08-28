@@ -16,15 +16,27 @@ class ForwardList {
 public:
     ForwardList():head(nullptr){}
 
+    T front() const {
+        return head->data;
+    }
+
+    T back() const {
+        Node<T>* temp = head;
+        while (temp->next != nullptr) {
+            temp = temp->next;
+        }
+        return temp->data;
+    }
+
     void push_front(T data) {
-        auto* node = new Node(data);
+        auto node = new Node<T>(data);
         node->next = head;
         this->head = node;
     }
 
     void push_back(T data) {
-        auto* node = new Node(data);
-        auto* temp = head;
+        auto node = new Node<T>(data);
+        Node<T>* temp = head;
         while (temp->next != nullptr) {
             temp = temp->next;
         }
@@ -32,7 +44,7 @@ public:
     }
 
     void pop_front() {
-        auto* temp = head;
+        const Node<T>* temp = head;
         this->head = head->next;
         delete temp;
     }
@@ -43,7 +55,7 @@ public:
             this->head = nullptr;
         }
         else {
-            auto* temp = head;
+            const Node<T>* temp = head;
             while (temp->next != nullptr) {
                 temp = temp->next;
             }
@@ -53,14 +65,22 @@ public:
     }
 
     void insert_in_position(T data, const size_t position) {
-        auto* node = new Node<T>;
-        auto* temp = head;
+        auto node = new Node<T>;
+        Node<T>* temp = head;
         node->data = data;
         for (size_t i = 0; i < position - 1; i++) {
             temp = temp->next;
         }
         node->next = temp->next;
         temp->next = node;
+    }
+
+    void clear() {
+        while (head != nullptr) {
+            const Node<T>* temp = head;
+            head = head->next;
+            delete temp;
+        }
     }
 };
 
