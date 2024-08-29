@@ -78,7 +78,7 @@ public:
 
     void clear() {
         while (head != nullptr) {
-            const Node<T>* temp = head;
+            const Node<T> *temp = head;
             head = head->next;
             delete temp;
         }
@@ -96,6 +96,18 @@ public:
             throw std::out_of_range("Index out of range");
         }
         return temp->data;
+    }
+
+    void reverse() {
+        Node<T>* prev = nullptr;
+
+        while (head != nullptr) {
+            Node<T> *current = head;
+            head = head->next;
+            current->next = prev;
+            prev = current;
+        }
+        head = prev;
     }
 };
 
