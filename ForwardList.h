@@ -1,5 +1,6 @@
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
+#include <stdexcept>
 
 template <typename T>
 struct Node {
@@ -14,7 +15,7 @@ template <typename T>
 class ForwardList {
     Node<T>* head;
 public:
-    ForwardList():head(nullptr){}
+    ForwardList () : head (nullptr) {}
 
     T front() const {
         return head->data;
@@ -81,6 +82,20 @@ public:
             head = head->next;
             delete temp;
         }
+    }
+
+    T& operator[](const size_t index) const {
+        Node<T>* temp = head;
+        for (size_t i = 0; i < index; i++) {
+            if (temp == nullptr) {
+                throw std::out_of_range("Index out of range");
+            }
+            temp = temp->next;
+        }
+        if (temp == nullptr) {
+            throw std::out_of_range("Index out of range");
+        }
+        return temp->data;
     }
 };
 
