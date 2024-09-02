@@ -1,21 +1,22 @@
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
 #include <stdexcept>
+#include <iostream>
 
 template <typename T>
 struct Node {
     T data;
     Node* next;
-    Node () : next (nullptr) {}
-    explicit Node (T data) : data (data), next (nullptr) {}
-    Node (T data, Node* next) : data (data), next (next) {}
+    Node() : next (nullptr) {}
+    explicit Node(T data) : data(data), next(nullptr) {}
+    Node(T data, Node* next) : data(data), next(next) {}
 };
 
 template <typename T>
 class ForwardList {
     Node<T>* head;
 public:
-    ForwardList () : head (nullptr) {}
+    ForwardList() : head(nullptr) {}
 
     T front() const {
         return head->data;
@@ -108,6 +109,39 @@ public:
             prev = current;
         }
         head = prev;
+    }
+
+    void sort() {
+        Node<T>* sorted = nullptr;
+        Node<T>* current = head;
+
+        while (current != nullptr) {
+            Node<T>* next = current->next;
+
+            if (sorted == nullptr || sorted->data >= current->data) {
+                current->next = sorted;
+                sorted = current;
+            } else {
+                Node<T>* temp = sorted;
+                while (temp->next != nullptr && temp->next->data < current->data) {
+                    temp = temp->next;
+                }
+                current->next = temp->next;
+                temp->next = current;
+            }
+
+            current = next;
+        }
+
+        head = sorted;
+    }
+
+    static void printList(const ForwardList<T> list) {
+        Node<T>* temp = list.head;
+        while (temp != nullptr) {
+            std::cout << temp->data << ' ';
+            temp = temp->next;
+        }
     }
 };
 

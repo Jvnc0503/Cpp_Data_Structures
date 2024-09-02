@@ -4,4 +4,5 @@ project(Cpp_Data_Structures)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(Cpp_Data_Structures main.cpp
-        ForwardList.h)
+        ForwardList.h
+        List.h)
