@@ -3,27 +3,35 @@
 #include <stdexcept>
 #include <iostream>
 
-template <typename T>
+template<typename T>
 struct Node {
     T data;
-    Node* next;
-    Node() : next (nullptr) {}
-    explicit Node(T data) : data(data), next(nullptr) {}
-    Node(T data, Node* next) : data(data), next(next) {}
+    Node *next;
+
+    Node() : next(nullptr) {
+    }
+
+    explicit Node(T data) : data(data), next(nullptr) {
+    }
+
+    Node(T data, Node *next) : data(data), next(next) {
+    }
 };
 
-template <typename T>
+template<typename T>
 class ForwardList {
-    Node<T>* head;
+    Node<T> *head;
+
 public:
-    ForwardList() : head(nullptr) {}
+    ForwardList() : head(nullptr) {
+    }
 
     T front() const {
         return head->data;
     }
 
     T back() const {
-        Node<T>* temp = head;
+        Node<T> *temp = head;
         while (temp->next != nullptr) {
             temp = temp->next;
         }
@@ -38,7 +46,7 @@ public:
 
     void push_back(T data) {
         auto node = new Node<T>(data);
-        Node<T>* temp = head;
+        Node<T> *temp = head;
         while (temp->next != nullptr) {
             temp = temp->next;
         }
@@ -46,7 +54,7 @@ public:
     }
 
     void pop_front() {
-        const Node<T>* temp = head;
+        const Node<T> *temp = head;
         this->head = head->next;
         delete temp;
     }
@@ -55,9 +63,8 @@ public:
         if (head->next == nullptr) {
             delete head;
             this->head = nullptr;
-        }
-        else {
-            const Node<T>* temp = head;
+        } else {
+            const Node<T> *temp = head;
             while (temp->next != nullptr) {
                 temp = temp->next;
             }
@@ -66,13 +73,22 @@ public:
         }
     }
 
-    void insert_in_position(T data, const size_t position) {
-        auto node = new Node<T>;
-        Node<T>* temp = head;
-        node->data = data;
-        for (size_t i = 0; i < position - 1; i++) {
+    void insert(T data, const size_t position) {
+        if (position == 0) {
+            push_front(data);
+            return;
+        }
+
+        auto node = new Node<T>(data);
+        Node<T> *temp = head;
+
+        for (size_t i = 0; i < position; ++i) {
+            if (temp == nullptr) {
+                throw std::out_of_range("Index out of range");
+            }
             temp = temp->next;
         }
+
         node->next = temp->next;
         temp->next = node;
     }
@@ -85,8 +101,8 @@ public:
         }
     }
 
-    T& operator[](const size_t index) const {
-        Node<T>* temp = head;
+    T &operator[](const size_t index) const {
+        Node<T> *temp = head;
         for (size_t i = 0; i < index; i++) {
             if (temp == nullptr) {
                 throw std::out_of_range("Index out of range");
@@ -100,7 +116,7 @@ public:
     }
 
     void reverse() {
-        Node<T>* prev = nullptr;
+        Node<T> *prev = nullptr;
 
         while (head != nullptr) {
             Node<T> *current = head;
@@ -112,17 +128,17 @@ public:
     }
 
     void sort() {
-        Node<T>* sorted = nullptr;
-        Node<T>* current = head;
+        Node<T> *sorted = nullptr;
+        Node<T> *current = head;
 
         while (current != nullptr) {
-            Node<T>* next = current->next;
+            Node<T> *next = current->next;
 
             if (sorted == nullptr || sorted->data >= current->data) {
                 current->next = sorted;
                 sorted = current;
             } else {
-                Node<T>* temp = sorted;
+                Node<T> *temp = sorted;
                 while (temp->next != nullptr && temp->next->data < current->data) {
                     temp = temp->next;
                 }
@@ -137,7 +153,7 @@ public:
     }
 
     static void printList(const ForwardList<T> list) {
-        Node<T>* temp = list.head;
+        Node<T> *temp = list.head;
         while (temp != nullptr) {
             std::cout << temp->data << ' ';
             temp = temp->next;
