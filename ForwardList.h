@@ -26,11 +26,21 @@ public:
     ForwardList() : head(nullptr) {
     }
 
+    ~ForwardList() {
+        clear();
+    }
+
     T front() const {
+        if (head == nullptr) {
+            throw std::runtime_error("List is empty");
+        }
         return head->data;
     }
 
     T back() const {
+        if (head == nullptr) {
+            throw std::runtime_error("List is empty");
+        }
         Node<T> *temp = head;
         while (temp->next != nullptr) {
             temp = temp->next;
@@ -59,27 +69,35 @@ public:
         temp->next = node;
     }
 
-    void pop_front() {
+    T pop_front() {
+        if (head == nullptr) {
+            throw std::runtime_error("List is empty");
+        }
+        T data = head->data;
         const Node<T> *temp = head;
         head = head->next;
         delete temp;
+        return data;
     }
 
-    void pop_back() {
+    T pop_back() {
         if (head == nullptr) {
-            return;
+            throw std::runtime_error("List is empty");
         }
         if (head->next == nullptr) {
+            T data = head->data;
             delete head;
             head = nullptr;
-            return;
+            return data;
         }
         Node<T> *temp = head;
         while (temp->next->next != nullptr) {
             temp = temp->next;
         }
+        T data = temp->next->data;
         delete temp->next;
         temp->next = nullptr;
+        return data;
     }
 
     void insert(const T &data, const size_t position) {
@@ -107,18 +125,19 @@ public:
             head = head->next;
             delete temp;
         }
+        head = nullptr;
     }
 
     T &operator[](const size_t index) const {
+        if (head == nullptr) {
+            throw std::out_of_range("Index out of range");
+        }
         Node<T> *temp = head;
         for (size_t i = 0; i < index; i++) {
             if (temp == nullptr) {
                 throw std::out_of_range("Index out of range");
             }
             temp = temp->next;
-        }
-        if (temp == nullptr) {
-            throw std::out_of_range("Index out of range");
         }
         return temp->data;
     }
@@ -160,22 +179,20 @@ public:
         head = sorted;
     }
 
-    static void printList(const ForwardList<T> list) {
+    static void printList(const ForwardList &list) {
         Node<T> *temp = list.head;
         while (temp != nullptr) {
             std::cout << temp->data << ' ';
             temp = temp->next;
         }
+        std::cout << '\n';
     }
 
-    bool empty() {
-        if (head == nullptr) {
-            return true;
-        }
-        return false;
+    bool empty() const {
+        return head == nullptr;
     }
 
-    int size() {
+    size_t size() const {
         size_t i = 0;
         Node<T> *temp = head;
         while (temp != nullptr) {
