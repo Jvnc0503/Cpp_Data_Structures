@@ -88,16 +88,15 @@ public:
             return;
         }
 
-        auto node = new Node<T>(data);
         Node<T> *temp = head;
-
-        for (size_t i = 0; i < position; ++i) {
+        for (size_t i = 0; i < position - 1; ++i) {
             if (temp == nullptr) {
                 throw std::out_of_range("Index out of range");
             }
             temp = temp->next;
         }
 
+        auto node = new Node<T>(data);
         node->next = temp->next;
         temp->next = node;
     }
