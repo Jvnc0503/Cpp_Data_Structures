@@ -6,4 +6,5 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(Cpp_Data_Structures main.cpp
         ForwardList.h
         List.h
+        Stack.h
 )

@@ -179,15 +179,6 @@ public:
         head = sorted;
     }
 
-    static void printList(const ForwardList &list) {
-        Node<T> *temp = list.head;
-        while (temp != nullptr) {
-            std::cout << temp->data << ' ';
-            temp = temp->next;
-        }
-        std::cout << '\n';
-    }
-
     [[nodiscard]] bool empty() const {
         return head == nullptr;
     }
@@ -200,6 +191,13 @@ public:
             temp = temp->next;
         }
         return size;
+    }
+
+    static void printList(const ForwardList &list) {
+        for (Node<T> *temp = head; temp != nullptr; temp = temp->next) {
+            std::cout << temp->data << ' ';
+        }
+        std::cout << '\n';
     }
 };
 

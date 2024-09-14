@@ -1,6 +1,7 @@
 #ifndef LIST_H
 #define LIST_H
 #include <stdexcept>
+#include <iostream>
 
 template<typename T>
 struct Node {
@@ -207,6 +208,13 @@ public:
             current = next;
         }
         head = prev;
+    }
+
+    static void printList(const List &list) {
+        for (Node<T> *temp = head; temp != nullptr; temp = temp->next) {
+            std::cout << temp->data << ' ';
+        }
+        std::cout << '\n';
     }
 };
 
