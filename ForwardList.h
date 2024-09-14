@@ -32,14 +32,14 @@ public:
 
     T front() const {
         if (head == nullptr) {
-            throw std::runtime_error("List is empty");
+            throw std::out_of_range("List is empty");
         }
         return head->data;
     }
 
     T back() const {
         if (head == nullptr) {
-            throw std::runtime_error("List is empty");
+            throw std::out_of_range("List is empty");
         }
         Node<T> *temp = head;
         while (temp->next != nullptr) {
@@ -188,18 +188,18 @@ public:
         std::cout << '\n';
     }
 
-    bool empty() const {
+    [[nodiscard]] bool empty() const {
         return head == nullptr;
     }
 
-    size_t size() const {
-        size_t i = 0;
+    [[nodiscard]] size_t size() const {
+        size_t size = 0;
         Node<T> *temp = head;
         while (temp != nullptr) {
+            ++size;
             temp = temp->next;
-            ++i;
         }
-        return i;
+        return size;
     }
 };
 
