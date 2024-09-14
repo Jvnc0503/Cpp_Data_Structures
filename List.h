@@ -125,7 +125,7 @@ public:
         node->prev = temp;
         temp->next = node;
 
-        if (next) {
+        if (next == nullptr) {
             next->prev = node;
         } else {
             tail = node;
@@ -133,21 +133,18 @@ public:
     }
 
     void remove(const size_t position) {
-        if (position >= size()) {
-            throw std::out_of_range("Index out of range");
-        }
         if (position == 0) {
             pop_front();
             return;
         }
-        if (position == size() - 1) {
-            pop_back();
-            return;
-        }
 
         Node<T> *temp = head;
-        for (size_t i = 0; i < position; ++i) {
+        for (size_t i = 0; temp != nullptr && i < position; ++i) {
             temp = temp->next;
+        }
+
+        if (temp == nullptr) {
+            throw std::out_of_range("Index out of range");
         }
 
         temp->prev->next = temp->next;
