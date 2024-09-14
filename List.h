@@ -56,31 +56,48 @@ public:
         }
     }
 
-    void insert(T data, const size_t position) {
+    void pop_front() {
+        if (head == nullptr) {
+            throw std::out_of_range("List is empty");
+        }
+
+        Node<T> *next = head->next;
+        delete head;
+        head = next;
+
+        if (head == nullptr) {
+            tail = nullptr;
+        } else {
+            head->prev = nullptr;
+        }
+    }
+
+    void insert(const T &data, const size_t position) {
         if (position == 0) {
             push_front(data);
             return;
         }
 
-        auto node = new Node<T>(data);
         Node<T> *temp = head;
-
-        for (size_t i = 0; i < position; ++i) {
+        for (size_t i = 0; i < position - 1; ++i) {
             if (temp == nullptr) {
                 throw std::out_of_range("Index out of range");
             }
             temp = temp->next;
         }
 
-        if (temp->next == nullptr) {
+        auto node = new Node<T>(data);
+        Node<T> *next = temp->next;
+
+        if (next == nullptr) {
             temp->next = node;
             node->prev = temp;
             tail = node;
         } else {
-            node->next = temp->next;
+            node->next = next;
             node->prev = temp;
-            temp->next->prev = node;
             temp->next = node;
+            next->prev = node;
         }
     }
 };

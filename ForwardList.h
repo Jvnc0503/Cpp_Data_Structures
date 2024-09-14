@@ -41,11 +41,17 @@ public:
     void push_front(T data) {
         auto node = new Node<T>(data);
         node->next = head;
-        this->head = node;
+        head = node;
     }
 
     void push_back(T data) {
         auto node = new Node<T>(data);
+
+        if (head == nullptr) {
+            head = node;
+            return;
+        }
+
         Node<T> *temp = head;
         while (temp->next != nullptr) {
             temp = temp->next;
@@ -55,14 +61,14 @@ public:
 
     void pop_front() {
         const Node<T> *temp = head;
-        this->head = head->next;
+        head = head->next;
         delete temp;
     }
 
     void pop_back() {
         if (head->next == nullptr) {
             delete head;
-            this->head = nullptr;
+            head = nullptr;
         } else {
             const Node<T> *temp = head;
             while (temp->next != nullptr) {
@@ -73,7 +79,7 @@ public:
         }
     }
 
-    void insert(T data, const size_t position) {
+    void insert(const T &data, const size_t position) {
         if (position == 0) {
             push_front(data);
             return;
@@ -158,6 +164,23 @@ public:
             std::cout << temp->data << ' ';
             temp = temp->next;
         }
+    }
+
+    bool empty() {
+        if (head == nullptr) {
+            return true;
+        }
+        return false;
+    }
+
+    int size() {
+        size_t i = 0;
+        Node<T>* temp = head;
+        while (temp != nullptr) {
+            temp = temp->next;
+            ++i;
+        }
+        return i;
     }
 };
 
