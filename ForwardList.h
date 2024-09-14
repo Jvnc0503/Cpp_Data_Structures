@@ -66,17 +66,20 @@ public:
     }
 
     void pop_back() {
+        if (head == nullptr) {
+            return;
+        }
         if (head->next == nullptr) {
             delete head;
             head = nullptr;
-        } else {
-            const Node<T> *temp = head;
-            while (temp->next != nullptr) {
-                temp = temp->next;
-            }
-            delete temp->next;
-            temp->next = nullptr;
+            return;
         }
+        Node<T> *temp = head;
+        while (temp->next->next != nullptr) {
+            temp = temp->next;
+        }
+        delete temp->next;
+        temp->next = nullptr;
     }
 
     void insert(const T &data, const size_t position) {
@@ -175,7 +178,7 @@ public:
 
     int size() {
         size_t i = 0;
-        Node<T>* temp = head;
+        Node<T> *temp = head;
         while (temp != nullptr) {
             temp = temp->next;
             ++i;
