@@ -166,16 +166,6 @@ public:
         return temp->data;
     }
 
-    void clear() {
-        while (head != nullptr) {
-            const Node<T> *temp = head;
-            head = head->next;
-            delete temp;
-        }
-        head = nullptr;
-        tail = nullptr;
-    }
-
     [[nodiscard]] bool empty() const {
         return head == nullptr;
     }
@@ -188,6 +178,16 @@ public:
             temp = temp->next;
         }
         return size;
+    }
+
+    void clear() {
+        while (head != nullptr) {
+            const Node<T> *temp = head;
+            head = head->next;
+            delete temp;
+        }
+        head = nullptr;
+        tail = nullptr;
     }
 
     void reverse() {
