@@ -104,38 +104,31 @@ public:
     }
 
     void insert(const T &data, const size_t position) {
-        if (position > size()) {
-            throw std::out_of_range("Index out of range");
-        }
         if (position == 0) {
             push_front(data);
             return;
         }
-        if (position == size()) {
-            push_back(data);
-            return;
-        }
 
         Node<T> *temp = head;
-        for (size_t i = 0; i < position - 1; ++i) {
-            if (temp == nullptr) {
-                throw std::out_of_range("Index out of range");
-            }
+        for (size_t i = 0; temp != nullptr && i < position - 1; ++i) {
             temp = temp->next;
+        }
+
+        if (temp == nullptr) {
+            throw std::out_of_range("Index out of range");
         }
 
         auto node = new Node<T>(data);
         Node<T> *next = temp->next;
 
-        if (next == nullptr) {
-            temp->next = node;
-            node->prev = temp;
-            tail = node;
-        } else {
-            node->next = next;
-            node->prev = temp;
-            temp->next = node;
+        node->next = next;
+        node->prev = temp;
+        temp->next = node;
+
+        if (next) {
             next->prev = node;
+        } else {
+            tail = node;
         }
     }
 
@@ -144,11 +137,11 @@ public:
             throw std::out_of_range("Index out of range");
         }
         if (position == 0) {
-            push_front();
+            pop_front();
             return;
         }
         if (position == size() - 1) {
-            push_back();
+            pop_back();
             return;
         }
 
@@ -160,6 +153,20 @@ public:
         temp->prev->next = temp->next;
         temp->next->prev = temp->prev;
         delete temp;
+    }
+
+    T &operator[](const size_t index) const {
+        if (head == nullptr) {
+            throw std::out_of_range("List is empty");
+        }
+        Node<T> *temp = head;
+        for (size_t i = 0; i < index; ++i) {
+            if (temp == nullptr) {
+                throw std::out_of_range("Index out of range");
+            }
+            temp = temp->next;
+        }
+        return temp->data;
     }
 
     void clear() {
@@ -187,9 +194,22 @@ public:
     }
 
     void reverse() {
-        if (head == nullptr) return;
-        Node<T> *temp = head;
-        Node<T> *current = nullptr;
+        if (head == nullptr) {
+            return;
+        }
+
+        Node<T> *prev = nullptr;
+        Node<T> *current = head;
+        tail = head;
+
+        while (current != nullptr) {
+            Node<T> *next = current->next;
+            current->next = prev;
+            current->prev = next;
+            prev = current;
+            current = next;
+        }
+        head = prev;
     }
 };
 
